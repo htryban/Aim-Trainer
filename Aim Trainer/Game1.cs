@@ -14,6 +14,7 @@ namespace Aim_Trainer
         FPSCamera fpsCamera;
         Terrain terrain;
         Rectangle crosshair;
+        Texture2D cross;
 
         public Game1()
         {
@@ -54,7 +55,7 @@ namespace Aim_Trainer
             spriteBatch = new SpriteBatch(GraphicsDevice);
             fpsCamera = new FPSCamera(this, new Vector3(0, 20, 10));
             Texture2D heightmap = Content.Load<Texture2D>("white-hm");
-            Texture2D cross = Content.Load<Texture2D>("crosshair");
+            cross = Content.Load<Texture2D>("crosshair");
             terrain = new Terrain(this, heightmap, 10f, Matrix.CreateTranslation(-127f, 0, 127));
         }
 
@@ -89,10 +90,13 @@ namespace Aim_Trainer
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            terrain.Draw(fpsCamera);
+            
+            spriteBatch.Begin();
             //spriteBatch.DrawString();
             // TODO: Add your drawing code here
-            spriteBatch.Draw(cross, crosshair, null, Color.White, new Vector2(cross.Width / 2f, cross.Height / 2f), SpriteEffects.None, 0);
+            spriteBatch.Draw(cross, crosshair, null, Color.White, 0, new Vector2(cross.Width / 2f, cross.Height / 2f), SpriteEffects.None, 0);
+            spriteBatch.End();
+            terrain.Draw(fpsCamera);
             base.Draw(gameTime);
         }
     }
