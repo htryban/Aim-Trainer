@@ -13,6 +13,7 @@ namespace Aim_Trainer
         SpriteBatch spriteBatch;
         FPSCamera fpsCamera;
         Terrain terrain;
+        Rectangle crosshair;
 
         public Game1()
         {
@@ -34,6 +35,12 @@ namespace Aim_Trainer
             graphics.PreferredBackBufferHeight = 1080;
             graphics.IsFullScreen = false;  
             graphics.ApplyChanges();
+
+            crosshair.X = graphics.PreferredBackBufferWidth / 2;
+            crosshair.Y = graphics.PreferredBackBufferHeight / 2;
+            crosshair.Height = 50;
+            crosshair.Width = 50;
+
             base.Initialize();
         }
 
@@ -47,6 +54,7 @@ namespace Aim_Trainer
             spriteBatch = new SpriteBatch(GraphicsDevice);
             fpsCamera = new FPSCamera(this, new Vector3(0, 20, 10));
             Texture2D heightmap = Content.Load<Texture2D>("white-hm");
+            Texture2D cross = Content.Load<Texture2D>("crosshair");
             terrain = new Terrain(this, heightmap, 10f, Matrix.CreateTranslation(-127f, 0, 127));
         }
 
@@ -84,7 +92,7 @@ namespace Aim_Trainer
             terrain.Draw(fpsCamera);
             //spriteBatch.DrawString();
             // TODO: Add your drawing code here
-
+            spriteBatch.Draw(cross, crosshair, null, Color.White, new Vector2(cross.Width / 2f, cross.Height / 2f), SpriteEffects.None, 0);
             base.Draw(gameTime);
         }
     }
