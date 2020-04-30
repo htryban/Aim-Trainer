@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/htryb/source/repos/CIS 580/Aim Trainer/Aim Trainer/Content/Heightmap.png</SourceFile>
-  <SourceTime>2020-04-28T19:03:00.5313785-05:00</SourceTime>
-  <DestFile>C:/Users/htryb/source/repos/CIS 580/Aim Trainer/Aim Trainer/Content/bin/Windows/Content/Heightmap.xnb</DestFile>
-  <DestTime>2020-04-29T19:47:07.7825002-05:00</DestTime>
+  <SourceFile>C:/Users/htryb/Source/Repos/CIS 580/Aim-Trainer/Aim Trainer/Content/Heightmap.png</SourceFile>
+  <SourceTime>2020-04-29T21:04:25.2211901-05:00</SourceTime>
+  <DestFile>C:/Users/htryb/Source/Repos/CIS 580/Aim-Trainer/Aim Trainer/Content/bin/Windows/Content/Heightmap.xnb</DestFile>
+  <DestTime>2020-04-29T21:26:35.2114498-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T10:35:54-06:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
