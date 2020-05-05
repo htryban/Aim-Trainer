@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace Aim_Trainer
         float verticalAngle;
 
         // The camera's position in the world 
-        Vector3 position;
+        public Vector3 position { get; set; }
 
         // The Game this camera belongs to 
         Game game;
@@ -42,12 +43,17 @@ namespace Aim_Trainer
         /// <summary>
         /// The sensitivity of the mouse when aiming
         /// </summary>
-        public float Sensitivity { get; set; } = 0.005f;
+        public float Sensitivity { get; set; } = 0.2f;
 
         /// <summary>
         /// The speed of the player while moving 
         /// </summary>
-        public float Speed { get; set; } = 0.2f;
+        public float Speed { get; set; } = 0.7f;
+
+        /// <summary>
+        /// vector3 where the player is facing 
+        /// </summary>
+        public Vector3 facing { get; set; }
 
         /// <summary>
         /// Constructs a new FPS Camera
@@ -73,19 +79,24 @@ namespace Aim_Trainer
         {
             var keyboard = Keyboard.GetState();
             var newMouseState = Mouse.GetState();
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //get dir player is facing
-            var facing = Vector3.Transform(Vector3.Forward, Matrix.CreateRotationY(horizontalAngle));
+            facing = Vector3.Transform(Vector3.Forward, Matrix.CreateRotationY(horizontalAngle));
 
             //movement
             if (keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up)) position += facing * Speed;
             if (keyboard.IsKeyDown(Keys.S) || keyboard.IsKeyDown(Keys.Down)) position -= facing * Speed;
             if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.Left)) position += Vector3.Cross(Vector3.Up, facing) * Speed;
             if (keyboard.IsKeyDown(Keys.D) || keyboard.IsKeyDown(Keys.Right)) position -= Vector3.Cross(Vector3.Up, facing) * Speed;
+            position += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * facing * Speed;
+            position -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X * Vector3.Cross(Vector3.Up, facing) * Speed;
 
             //adj mouse angles
-            horizontalAngle += Sensitivity * (oldMouseState.X - newMouseState.X);
-            verticalAngle += Sensitivity * (oldMouseState.Y - newMouseState.Y);
+            horizontalAngle += Sensitivity * (oldMouseState.X - newMouseState.X) * elapsed;
+            verticalAngle += Sensitivity * (.75f) * (oldMouseState.Y - newMouseState.Y) * elapsed;
+            horizontalAngle -= Sensitivity * (.5f) * GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.X;
+            verticalAngle += Sensitivity * (.35f) * GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.Y;
             direction = Vector3.Transform(Vector3.Forward, Matrix.CreateRotationX(verticalAngle) * Matrix.CreateRotationY(horizontalAngle));
 
             //create view matrix

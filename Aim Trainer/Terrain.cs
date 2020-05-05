@@ -141,7 +141,7 @@ namespace Aim_Trainer
         public Terrain(Game game, Texture2D heightmap, float heightRange, Matrix world)
         {
             this.game = game;
-            texture = game.Content.Load<Texture2D>("tiles");
+            texture = game.Content.Load<Texture2D>("100_1449_seamless");
             LoadHeights(heightmap, heightRange);
             InitializeVertices();
             InitializeIndices();
