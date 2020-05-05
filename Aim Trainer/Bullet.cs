@@ -17,12 +17,14 @@ namespace Aim_Trainer
 
         float facing = 0;
 
+        Vector3 aimTranslation = new Vector3(-1, -1, -1);
+
         Vector3 aim = Vector3.Forward;
 
         public Bullet(Game game, Vector3 dir, Vector3 pos)
         {
             this.game = game;
-            direction = dir * aim;
+            direction = dir * aimTranslation;
             model = game.Content.Load<Model>("projektil FBX");
             position = pos;
             //transforms = new Matrix[model.Bones.Count];
@@ -36,8 +38,6 @@ namespace Aim_Trainer
 
         public void Update(GameTime gameTime)
         {
-            aim = Vector3.Forward;
-            //direction = //Vector3.Transform(Vector3.Forward, Matrix.CreateRotationY(facing));
             position -= Speed * direction;
         }
 

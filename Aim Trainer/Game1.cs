@@ -96,7 +96,7 @@ namespace Aim_Trainer
             
             if (newMouseState.LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0)
             {
-                bullets.Add(new Bullet(this, fpsCamera.facing, fpsCamera.position));
+                bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.position));
             }
 
             // TODO: Add your update logic here
@@ -124,6 +124,7 @@ namespace Aim_Trainer
             
             spriteBatch.Begin();
             fps.DrawFps(spriteBatch, font, new Vector2(10f, 10f), Color.MonoGameOrange);
+            spriteBatch.DrawString(font, fpsCamera.firingAngle.ToString(), new Vector2(1500, 980), Color.White);
 
             if (bullets != null) foreach (var bullet in bullets)
             {

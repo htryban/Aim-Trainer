@@ -55,6 +55,8 @@ namespace Aim_Trainer
         /// </summary>
         public Vector3 facing { get; set; }
 
+        public Vector3 firingAngle { get; set; }
+
         /// <summary>
         /// Constructs a new FPS Camera
         /// </summary>
@@ -101,7 +103,7 @@ namespace Aim_Trainer
 
             //create view matrix
             View = Matrix.CreateLookAt(position, position + direction, Vector3.Up);
-
+            firingAngle = new Vector3(facing.X, verticalAngle, facing.Z);
             //reset mouse state
             Mouse.SetPosition(game.Window.ClientBounds.Width / 2, game.Window.ClientBounds.Height / 2);
             oldMouseState = Mouse.GetState();
