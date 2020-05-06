@@ -16,7 +16,6 @@ namespace Aim_Trainer
         Terrain terrain;
         Rectangle crosshair;
         Texture2D cross;
-        Sphere sphere;
         SimpleFps fps;
         SpriteFont font;
         //Crate[] bullets;
@@ -66,7 +65,6 @@ namespace Aim_Trainer
             //fpsCamera = new CirclingCamera(this, new Vector3(0,50,-100), 0.5f);
             Texture2D heightmap = Content.Load<Texture2D>("white-hm");
             cross = Content.Load<Texture2D>("crosshair");
-            sphere = new Sphere(5, graphics.GraphicsDevice);
             terrain = new Terrain(this, heightmap, 10f, Matrix.CreateTranslation(-127f, 0, 127));
             fps = new SimpleFps();
             font = Content.Load<SpriteFont>("font");
@@ -96,7 +94,7 @@ namespace Aim_Trainer
             
             if (newMouseState.LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0)
             {
-                bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.position));
+                bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
             }
 
             // TODO: Add your update logic here
@@ -120,12 +118,11 @@ namespace Aim_Trainer
             GraphicsDevice.Clear(Color.CornflowerBlue); 
             
             terrain.Draw(fpsCamera);
-            //sphere.Draw(fpsCamera);
             
             spriteBatch.Begin();
             fps.DrawFps(spriteBatch, font, new Vector2(10f, 10f), Color.MonoGameOrange);
             spriteBatch.DrawString(font, fpsCamera.firingAngle.ToString(), new Vector2(1500, 980), Color.White);
-
+            //if (bullets.Count > 1 && bullets != null) spriteBatch.DrawString(font, bullets[bullets.Count-1].added.ToString(), new Vector2(1500, 880), Color.White);
             if (bullets != null) foreach (var bullet in bullets)
             {
                 bullet.Draw(fpsCamera);

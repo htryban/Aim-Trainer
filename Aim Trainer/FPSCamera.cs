@@ -15,7 +15,7 @@ namespace Aim_Trainer
     public class FPSCamera : ICamera
     {
         // The angle of rotation about the Y-axis
-        float horizontalAngle;
+        public float horizontalAngle { get; set; }
 
         // The angle of rotation about the X-axis
         float verticalAngle;
@@ -56,6 +56,7 @@ namespace Aim_Trainer
         public Vector3 facing { get; set; }
 
         public Vector3 firingAngle { get; set; }
+
 
         /// <summary>
         /// Constructs a new FPS Camera

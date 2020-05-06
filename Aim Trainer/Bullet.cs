@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,21 +16,19 @@ namespace Aim_Trainer
 
         Vector3 position;
 
-        float facing = 0;
+        public float facing { get; set; }
 
         Vector3 aimTranslation = new Vector3(-1, -1, -1);
 
-        Vector3 aim = Vector3.Forward;
+        public float added { get; set; } = 3.14f;
 
-        public Bullet(Game game, Vector3 dir, Vector3 pos)
+        public Bullet(Game game, Vector3 dir, float horizonalAngle, Vector3 pos)
         {
             this.game = game;
             direction = dir * aimTranslation;
             model = game.Content.Load<Model>("projektil FBX");
             position = pos;
-            //transforms = new Matrix[model.Bones.Count];
-            //position += new Vector3(0, 20, 0);
-            
+            facing = (added+horizonalAngle);            
         }
 
         public float Speed { get; set; } = 10f;
@@ -43,12 +42,12 @@ namespace Aim_Trainer
 
         public void Draw(ICamera camera)
         {
-            Matrix world = Matrix.CreateRotationY(facing) * Matrix.CreateTranslation(position);
-
+            Matrix world = Matrix.CreateRotationY(facing) * Matrix.CreateTranslation(position);// * Matrix.CreateFromAxisAngle(new Vector3(0,0,0), .9f);
+            
             Matrix view = camera.View;
 
             Matrix projection = camera.Projection;
-
+            
             model.Draw(world, view, projection);
         }
 
