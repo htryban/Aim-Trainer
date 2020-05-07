@@ -25,6 +25,37 @@
 /processorParam:TextureFormat=Color
 /build:100_1449_seamless.JPG
 
+#begin apple.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=True
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=0.02
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:apple.fbx
+
+#begin apple_texture_by_agf81_d2u9mzx-pre.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:apple_texture_by_agf81_d2u9mzx-pre.jpg
+
 #begin crosshair.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -56,6 +87,25 @@
 /processorParam:TextureFormat=Color
 /build:grass.jpg
 
+#begin pomegranate.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=242,73,11,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=True
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=0.002
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:pomegranate.fbx
+
 #begin projektil FBX.FBX
 /importer:FbxImporter
 /processor:ModelProcessor
@@ -66,11 +116,11 @@
 /processorParam:GenerateTangentFrames=False
 /processorParam:PremultiplyTextureAlpha=True
 /processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:ResizeTexturesToPowerOfTwo=True
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
-/processorParam:Scale=1
+/processorParam:Scale=0.1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:projektil FBX.FBX
@@ -98,4 +148,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:white-hm.jpg
+
+#begin wood-texture-1196539.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:wood-texture-1196539.jpg
 
