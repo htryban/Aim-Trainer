@@ -43,7 +43,7 @@ namespace Aim_Trainer
         /// <summary>
         /// The sensitivity of the mouse when aiming
         /// </summary>
-        public float Sensitivity { get; set; } = 0.2f;
+        public float Sensitivity { get; set; } = 0.1f;
 
         /// <summary>
         /// The speed of the player while moving 
@@ -70,6 +70,7 @@ namespace Aim_Trainer
             this.horizontalAngle = 0;
             this.verticalAngle = 0;
             this.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, game.GraphicsDevice.Viewport.AspectRatio, 1, 1000);
+            facing = new Vector3(0, 0, 1);
             Mouse.SetPosition(game.Window.ClientBounds.Width / 2, game.Window.ClientBounds.Height / 2);
             oldMouseState = Mouse.GetState();
         }
@@ -98,8 +99,8 @@ namespace Aim_Trainer
             //adj mouse angles
             horizontalAngle += Sensitivity * (oldMouseState.X - newMouseState.X) * elapsed;
             verticalAngle += Sensitivity * (.75f) * (oldMouseState.Y - newMouseState.Y) * elapsed;
-            horizontalAngle -= Sensitivity * (.5f) * GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.X;
-            verticalAngle += Sensitivity * (.35f) * GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.Y;
+            horizontalAngle -= Sensitivity * (.35f) * GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.X;
+            verticalAngle += Sensitivity * (.2f) * GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.Y;
             direction = Vector3.Transform(Vector3.Forward, Matrix.CreateRotationX(verticalAngle) * Matrix.CreateRotationY(horizontalAngle));
 
             //create view matrix

@@ -23,6 +23,10 @@ namespace Aim_Trainer
 
         public bool isRemoved = false;
 
+        public float lifespan = 5f;
+
+        private float _timer;
+
         public Matrix world;
 
         public Target(Game game, Vector3 pos)
@@ -40,6 +44,8 @@ namespace Aim_Trainer
             {
                 isRemoved = true;
             }
+            _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (_timer > lifespan) isRemoved = true;
         }
 
         public void Draw(ICamera camera)

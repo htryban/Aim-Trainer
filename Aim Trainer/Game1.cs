@@ -60,6 +60,11 @@ namespace Aim_Trainer
             bullets = new List<Bullet>();
             targets = new List<Target>();
 
+            for(int i = 0; i < 4; i++)
+            {
+                targets.Add(new Target(this, randomSpot()));
+            }
+
             base.Initialize();
         }
 
@@ -70,10 +75,10 @@ namespace Aim_Trainer
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            fpsCamera = new FPSCamera(this, new Vector3(0, 20, 10));
+            fpsCamera = new FPSCamera(this, new Vector3(45, 20, -110));
             Texture2D heightmap = Content.Load<Texture2D>("white-hm");
             cross = Content.Load<Texture2D>("crosshair");
-            terrain = new Terrain(this, heightmap, 10f, Matrix.CreateTranslation(-127f, 0, 127));
+            terrain = new Terrain(this, heightmap, 5f, Matrix.CreateTranslation(-127f, 0, 127));
             fps = new SimpleFps();
             font = Content.Load<SpriteFont>("font");
         }
@@ -100,7 +105,7 @@ namespace Aim_Trainer
                 Exit();
 
             //shooting
-            if ((newMouseState.LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0) && oldMouseState.LeftButton != ButtonState.Pressed)
+            if ((newMouseState.LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0))// && oldMouseState.LeftButton != ButtonState.Pressed)
             {
                 bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
             }
@@ -123,6 +128,11 @@ namespace Aim_Trainer
                     bullets.RemoveAt(i);
                     i--;
                 }
+                else if (bullets[i].position.Y < 5f)
+                    {
+                        bullets.RemoveAt(i);
+                        i--;
+                    }
                 else
                 {
                     for(int j = 0; j < targets.Count; j++)
@@ -139,7 +149,13 @@ namespace Aim_Trainer
                     }
                 }
             }
-            /*
+
+            if(targets.Count < 4)
+            {
+                targets.Add(new Target(this, randomSpot()));
+            }
+
+            
             //currently unnecessary, maybe for movement later.
             if (targets != null) for (int i = 0; i < targets.Count; i++)
             {
@@ -149,7 +165,7 @@ namespace Aim_Trainer
                     targets.RemoveAt(i);
                     i--;
                 }
-            }*/
+            }
             
             oldKeyboard = newKeyboard;
             oldMouseState = newMouseState;
@@ -159,8 +175,8 @@ namespace Aim_Trainer
         public Vector3 randomSpot()
         {
             fx = (float)rand.Next(0, 100);
-            fy = (float)rand.Next(0, 50);
-            fz = (float)rand.Next(0, 100);
+            fy = (float)rand.Next(6, 50);
+            fz = (float)rand.Next(-250, -200);
             return new Vector3(fx, fy, fz);
         }
 
@@ -170,17 +186,15 @@ namespace Aim_Trainer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue); 
-            
-            terrain.Draw(fpsCamera);
+            GraphicsDevice.Clear(Color.SkyBlue);
             
             spriteBatch.Begin();
             fps.DrawFps(spriteBatch, font, new Vector2(10f, 10f), Color.MonoGameOrange);
-            spriteBatch.DrawString(font, fpsCamera.firingAngle.ToString(), new Vector2(1500, 980), Color.White);
-            spriteBatch.DrawString(font, fx.ToString() + ", 75, " + fz.ToString() + " :  " + bullets.Count + " bullets", new Vector2(1500, 880), Color.White);
-            spriteBatch.DrawString(font, "score: " + score + " apples: " + apples, new Vector2(1500, 940), Color.White);
-            //if (bullets.Count > 1 && bullets != null) spriteBatch.DrawString(font, bullets[bullets.Count-1].added.ToString(), new Vector2(1500, 880), Color.White);
-
+            spriteBatch.DrawString(font, fpsCamera.position.ToString(), new Vector2(1500, 980), Color.White);
+            //spriteBatch.DrawString(font, fx.ToString() + ", 75, " + fz.ToString() + " :  " + bullets.Count + " bullets", new Vector2(1500, 880), Color.White);
+            spriteBatch.DrawString(font, "score: " + score + " apples: " + targets.Count, new Vector2(1500, 940), Color.White);
+            //if (targets.Count > 1 && targets!= null) spriteBatch.DrawString(font, targets[targets.Count-1].position.ToString(), new Vector2(1500, 880), Color.White);
+            terrain.Draw(fpsCamera);
             if (targets != null) foreach (var target in targets)
             {
                 target.Draw(fpsCamera);
@@ -190,7 +204,7 @@ namespace Aim_Trainer
             {
                 bullet.Draw(fpsCamera);
             }
-
+            
             spriteBatch.Draw(cross, crosshair, null, Color.White, 0, new Vector2(cross.Width / 2f, cross.Height / 2f), SpriteEffects.None, 0);
             spriteBatch.End();
 

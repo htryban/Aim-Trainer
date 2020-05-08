@@ -14,7 +14,7 @@ namespace Aim_Trainer
         Game game;
         Model model;
 
-        Vector3 position;
+        public Vector3 position;
 
         public float facing { get; set; }
 
@@ -53,7 +53,7 @@ namespace Aim_Trainer
             return false;
         }
 
-        public float Speed { get; set; } = 10f;
+        public float Speed { get; set; } = 5f;
 
         public Vector3 direction { get; set; }
 
