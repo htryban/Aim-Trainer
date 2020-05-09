@@ -51,6 +51,7 @@
     <Compile Include="SimpleFpsCounter.cs" />
     <Compile Include="Target.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="Wall.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

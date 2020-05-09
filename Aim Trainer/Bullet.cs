@@ -24,7 +24,7 @@ namespace Aim_Trainer
 
         public bool isRemoved = false;
 
-        public float lifespan = 1f;
+        public float lifespan = 1.5f;
 
         private float _timer;
 

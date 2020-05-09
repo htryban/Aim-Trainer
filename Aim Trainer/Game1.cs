@@ -21,16 +21,18 @@ namespace Aim_Trainer
         SpriteFont font;
         List<Bullet> bullets;
         List<Target> targets;
+        List<Wall> walls;
+
         KeyboardState newKeyboard;
         MouseState newMouseState;
         KeyboardState oldKeyboard;
         MouseState oldMouseState;
+
         Random rand = new Random();
         float fx;
         float fy;
         float fz;
         int score = 0;
-        int apples = 0;
 
         public Game1()
         {
@@ -59,6 +61,7 @@ namespace Aim_Trainer
 
             bullets = new List<Bullet>();
             targets = new List<Target>();
+            walls = new List<Wall>();
 
             for(int i = 0; i < 4; i++)
             {
@@ -81,6 +84,20 @@ namespace Aim_Trainer
             terrain = new Terrain(this, heightmap, 5f, Matrix.CreateTranslation(-127f, 0, 127));
             fps = new SimpleFps();
             font = Content.Load<SpriteFont>("font");
+
+            //walls referenced as if loading into the game without turning or moving
+            walls.Add(new Wall(this, new Vector3(0, -30, -345), MathHelper.Pi)); //back left
+            walls.Add(new Wall(this, new Vector3(200, -30, -345), MathHelper.Pi)); //back right
+            walls.Add(new Wall(this, new Vector3(100, -30, -345), MathHelper.Pi)); //back middle
+            walls.Add(new Wall(this, new Vector3(235, -30, -208), MathHelper.PiOver2)); //right 3
+            walls.Add(new Wall(this, new Vector3(235, -30, -108), MathHelper.PiOver2)); //right 2
+            walls.Add(new Wall(this, new Vector3(235, -30, -8), MathHelper.PiOver2)); //right 1
+            walls.Add(new Wall(this, new Vector3(-140, -30, -310), MathHelper.Pi + MathHelper.PiOver2)); //left 3
+            walls.Add(new Wall(this, new Vector3(-140, -30, -210), MathHelper.Pi + MathHelper.PiOver2)); //left 2
+            walls.Add(new Wall(this, new Vector3(-140, -30, -110), MathHelper.Pi + MathHelper.PiOver2)); //left 1
+            walls.Add(new Wall(this, new Vector3(95, -30, 30), 0)); //back right
+            walls.Add(new Wall(this, new Vector3(-105, -30, 30), 0)); //back left
+            walls.Add(new Wall(this, new Vector3(-5, -30, 30), 0)); //back middle
         }
 
         /// <summary>
@@ -113,7 +130,6 @@ namespace Aim_Trainer
             if ((newKeyboard.IsKeyDown(Keys.T) && !oldKeyboard.IsKeyDown(Keys.T)) || (GamePad.GetState(PlayerIndex.One).Triggers.Left > 0))
             {
                 targets.Add(new Target(this, randomSpot()));
-                apples++;
             }
 
 
@@ -142,7 +158,6 @@ namespace Aim_Trainer
                             score++;
                             bullets.RemoveAt(i);
                             targets.RemoveAt(j);
-                            apples--;
                             i--;
                             break;
                         }
@@ -155,8 +170,6 @@ namespace Aim_Trainer
                 targets.Add(new Target(this, randomSpot()));
             }
 
-            
-            //currently unnecessary, maybe for movement later.
             if (targets != null) for (int i = 0; i < targets.Count; i++)
             {
                 targets[i].Update(gameTime);
@@ -189,12 +202,20 @@ namespace Aim_Trainer
             GraphicsDevice.Clear(Color.SkyBlue);
             
             spriteBatch.Begin();
+            terrain.Draw(fpsCamera);
+
+            //try something like iterating backwards to prevent weird wall visual glitches, or algo to determine which wall is closest to player and draw that last
+            if (walls!= null) foreach (var wall in walls)
+                {
+                    wall.Draw(fpsCamera);
+                }
+
             fps.DrawFps(spriteBatch, font, new Vector2(10f, 10f), Color.MonoGameOrange);
             spriteBatch.DrawString(font, fpsCamera.position.ToString(), new Vector2(1500, 980), Color.White);
             //spriteBatch.DrawString(font, fx.ToString() + ", 75, " + fz.ToString() + " :  " + bullets.Count + " bullets", new Vector2(1500, 880), Color.White);
-            spriteBatch.DrawString(font, "score: " + score + " apples: " + targets.Count, new Vector2(1500, 940), Color.White);
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(935, 40), Color.White);
             //if (targets.Count > 1 && targets!= null) spriteBatch.DrawString(font, targets[targets.Count-1].position.ToString(), new Vector2(1500, 880), Color.White);
-            terrain.Draw(fpsCamera);
+            
             if (targets != null) foreach (var target in targets)
             {
                 target.Draw(fpsCamera);
