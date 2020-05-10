@@ -91,7 +91,7 @@ namespace Aim_Trainer
             cross = Content.Load<Texture2D>("crosshair");
             fps = new SimpleFps();
             font = Content.Load<SpriteFont>("font");
-            fireRate = 0;
+            fireRate = 3;
             bulletsFired = 0;
             shootTimer = 0;
             checktime = 0;
@@ -132,6 +132,7 @@ namespace Aim_Trainer
         {
             newKeyboard = Keyboard.GetState();
             newMouseState = Mouse.GetState();
+            newGame = GamePad.GetState(PlayerIndex.One);
             checktime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -204,8 +205,10 @@ namespace Aim_Trainer
                 targets.Add(new Target(this, randomSpot()));
             }*/
 
-            if (newKeyboard.IsKeyDown(Keys.Right) && !oldKeyboard.IsKeyDown(Keys.Right)) if (fireRate < 5) fireRate++;
-            if (newKeyboard.IsKeyDown(Keys.Left) && !oldKeyboard.IsKeyDown(Keys.Left)) if (fireRate > 0) fireRate--;
+            if ((newKeyboard.IsKeyDown(Keys.Right) && !oldKeyboard.IsKeyDown(Keys.Right)) || (newGame.DPad.Right == ButtonState.Pressed && oldGame.DPad.Right == ButtonState.Released))
+                if (fireRate < 5) fireRate++;
+            if ((newKeyboard.IsKeyDown(Keys.Left) && !oldKeyboard.IsKeyDown(Keys.Left)) || (newGame.DPad.Left == ButtonState.Pressed && oldGame.DPad.Left == ButtonState.Released)) 
+                if (fireRate > 0) fireRate--;
 
             fpsCamera.Update(gameTime);
             fps.Update(gameTime);
@@ -263,7 +266,7 @@ namespace Aim_Trainer
         public Vector3 randomSpot()
         {
             fx = (float)rand.Next(0, 100);
-            fy = (float)rand.Next(6, 50);
+            fy = (float)rand.Next(6, 40);
             fz = (float)rand.Next(-250, -200);
             return new Vector3(fx, fy, fz);
         }
