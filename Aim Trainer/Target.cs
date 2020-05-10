@@ -29,12 +29,13 @@ namespace Aim_Trainer
 
         public Matrix world;
 
-        public Target(Game game, Vector3 pos)
+        public Target(Game game, Vector3 pos, string fruit)
         {
             this.game = game;
-            model = game.Content.Load<Model>("apple");
+            model = game.Content.Load<Model>(fruit);
             position = pos;
             transforms = new Matrix[model.Bones.Count];
+            //facing = MathHelper.Pi;
         }
 
         public void Update(GameTime gameTime)

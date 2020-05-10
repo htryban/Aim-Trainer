@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Aim_Trainer
 {
@@ -23,7 +24,7 @@ namespace Aim_Trainer
             if (elapsed > msgFrequency)
             {
                 //msg = " Fps: " + (frames / elapsed).ToString() + "\n Elapsed time: " + elapsed.ToString() + "\n Updates: " + updates.ToString() + "\n Frames: " + frames.ToString();
-                msg = " FPS: " + (frames / elapsed).ToString();
+                msg = " FPS: " + Math.Round((frames / elapsed), 2, MidpointRounding.AwayFromZero).ToString();
                 //Console.WriteLine(msg);
                 elapsed = 0;
                 frames = 0;

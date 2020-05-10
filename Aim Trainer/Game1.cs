@@ -35,13 +35,14 @@ namespace Aim_Trainer
         float fx;
         float fy;
         float fz;
-        int score;
-        int bulletsFired;
+        double score;
+        double bulletsFired;
         int fireRate;
         float _timer;
         float checktime;
         float shootTimer;
         string firingMode;
+        double accuracy;
 
         public Game1()
         {
@@ -74,7 +75,7 @@ namespace Aim_Trainer
 
             for(int i = 0; i < 4; i++)
             {
-                targets.Add(new Target(this, randomSpot()));
+                targets.Add(new Target(this, randomSpot(), randomFruit()));
             }
 
             base.Initialize();
@@ -244,7 +245,7 @@ namespace Aim_Trainer
 
             if(targets.Count < 4)
             {
-                targets.Add(new Target(this, randomSpot()));
+                targets.Add(new Target(this, randomSpot(), randomFruit()));
             }
 
             if (targets != null) for (int i = 0; i < targets.Count; i++)
@@ -256,7 +257,8 @@ namespace Aim_Trainer
                     i--;
                 }
             }
-            
+
+            if (bulletsFired > 0) accuracy = score / bulletsFired;
             oldKeyboard = newKeyboard;
             oldMouseState = newMouseState;
             oldGame = newGame;
@@ -269,6 +271,13 @@ namespace Aim_Trainer
             fy = (float)rand.Next(6, 40);
             fz = (float)rand.Next(-250, -200);
             return new Vector3(fx, fy, fz);
+        }
+
+        public string randomFruit()
+        {
+            int x = rand.Next(1, 3);
+            if (x == 1) return "apple";
+            else return "melon";
         }
 
         /// <summary>
@@ -290,10 +299,10 @@ namespace Aim_Trainer
                 }
 
             fps.DrawFps(spriteBatch, font, new Vector2(10f, 10f), Color.White);
-            spriteBatch.DrawString(font, "Fire Rate: " + firingMode, new Vector2(1500, 40), Color.White);
+            spriteBatch.DrawString(font, "Fire Rate: " + firingMode, new Vector2(1680, 10), Color.White);
             //spriteBatch.DrawString(font, fpsCamera.position.ToString(), new Vector2(1500, 980), Color.White);
-            spriteBatch.DrawString(font, "firing mode: "+fireRate + " \nShoot timer: "+shootTimer + "\ncheck timer: "+checktime, new Vector2(1500, 880), Color.White);
-            spriteBatch.DrawString(font, "Score: " + score, new Vector2(935, 40), Color.White);
+            spriteBatch.DrawString(font, "accuracy: "+Math.Round(accuracy, 5, MidpointRounding.AwayFromZero)*100+"%", new Vector2(1500, 880), Color.White);
+            spriteBatch.DrawString(font, "Score: " + (int)score, new Vector2(885, 10), Color.White);
             //if (targets.Count > 1 && targets!= null) spriteBatch.DrawString(font, targets[targets.Count-1].position.ToString(), new Vector2(1500, 880), Color.White);
             
             if (targets != null) foreach (var target in targets)
