@@ -17,8 +17,6 @@ namespace Aim_Trainer
 
         public float facing { get; set; }
 
-        Matrix[] transforms;
-
         public Matrix world;
 
         public Wall(Game game, Vector3 pos, float facing)
@@ -27,8 +25,6 @@ namespace Aim_Trainer
             this.facing = facing;
             model = game.Content.Load<Model>("Wall_1");
             position = pos;
-
-            transforms = new Matrix[model.Bones.Count];
         }
 
         public void Draw(ICamera camera)

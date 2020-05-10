@@ -20,7 +20,7 @@ namespace Aim_Trainer
 
         Vector3 aimTranslation = new Vector3(-1, -1, -1);
 
-        public float added { get; set; } = 3.14f;
+        public float added { get; set; } = MathHelper.Pi;
 
         public bool isRemoved = false;
 

@@ -14,7 +14,6 @@ namespace Aim_Trainer
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         FPSCamera fpsCamera;
-        Terrain terrain;
         Rectangle crosshair;
         Texture2D cross;
         SimpleFps fps;
@@ -22,17 +21,27 @@ namespace Aim_Trainer
         List<Bullet> bullets;
         List<Target> targets;
         List<Wall> walls;
+        Floor floor;
+        Floor ceiling;
 
         KeyboardState newKeyboard;
         MouseState newMouseState;
         KeyboardState oldKeyboard;
         MouseState oldMouseState;
+        GamePadState newGame;
+        GamePadState oldGame;
 
         Random rand = new Random();
         float fx;
         float fy;
         float fz;
-        int score = 0;
+        int score;
+        int bulletsFired;
+        int fireRate;
+        float _timer;
+        float checktime;
+        float shootTimer;
+        string firingMode;
 
         public Game1()
         {
@@ -78,12 +87,14 @@ namespace Aim_Trainer
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            fpsCamera = new FPSCamera(this, new Vector3(45, 20, -110));
-            Texture2D heightmap = Content.Load<Texture2D>("white-hm");
+            fpsCamera = new FPSCamera(this, new Vector3(45, 20, -110));//20
             cross = Content.Load<Texture2D>("crosshair");
-            terrain = new Terrain(this, heightmap, 5f, Matrix.CreateTranslation(-127f, 0, 127));
             fps = new SimpleFps();
             font = Content.Load<SpriteFont>("font");
+            fireRate = 0;
+            bulletsFired = 0;
+            shootTimer = 0;
+            checktime = 0;
 
             //walls referenced as if loading into the game without turning or moving
             walls.Add(new Wall(this, new Vector3(0, -30, -345), MathHelper.Pi)); //back left
@@ -98,6 +109,9 @@ namespace Aim_Trainer
             walls.Add(new Wall(this, new Vector3(95, -30, 30), 0)); //back right
             walls.Add(new Wall(this, new Vector3(-105, -30, 30), 0)); //back left
             walls.Add(new Wall(this, new Vector3(-5, -30, 30), 0)); //back middle
+
+            floor = new Floor(this, new Vector3(58,1,-84), 0, false); 
+            ceiling = new Floor(this, new Vector3(58, 80, -84), 0, true);
         }
 
         /// <summary>
@@ -118,20 +132,80 @@ namespace Aim_Trainer
         {
             newKeyboard = Keyboard.GetState();
             newMouseState = Mouse.GetState();
+            checktime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             //shooting
-            if ((newMouseState.LeftButton == ButtonState.Pressed || GamePad.GetState(PlayerIndex.One).Triggers.Right > 0))// && oldMouseState.LeftButton != ButtonState.Pressed)
+            if (fireRate == 0)
             {
-                bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
+                firingMode = "Single Fire";
+                if ((newMouseState.LeftButton == ButtonState.Pressed || newGame.Triggers.Right > 0) && (oldMouseState.LeftButton != ButtonState.Pressed && oldGame.Triggers.Right == 0))
+                {
+                    bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
+                    bulletsFired++;
+                }
             }
-            //temp create enemies
-            if ((newKeyboard.IsKeyDown(Keys.T) && !oldKeyboard.IsKeyDown(Keys.T)) || (GamePad.GetState(PlayerIndex.One).Triggers.Left > 0))
+            else if (fireRate == 1)
             {
-                targets.Add(new Target(this, randomSpot()));
+                firingMode = "300 RPM";
+                if ((newMouseState.LeftButton == ButtonState.Pressed || newGame.Triggers.Right > 0) && checktime - shootTimer > .2)
+                {
+                    shootTimer = checktime;
+                    bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
+                    bulletsFired++;
+                }
+            }
+            else if (fireRate == 2)
+            {
+                firingMode = "600 RPM";
+                if ((newMouseState.LeftButton == ButtonState.Pressed || newGame.Triggers.Right > 0) && checktime - shootTimer > .10)
+                {
+                    shootTimer = checktime;
+                    bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
+                    bulletsFired++;
+                }
+            }
+            else if (fireRate == 3)
+            {
+                firingMode = "800 RPM";
+                if ((newMouseState.LeftButton == ButtonState.Pressed || newGame.Triggers.Right > 0) && checktime - shootTimer > .075)
+                {
+                    shootTimer = checktime;
+                    bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
+                    bulletsFired++;
+                }
+            }
+            else if (fireRate == 4)
+            {
+                firingMode = "980 RPM";
+                if ((newMouseState.LeftButton == ButtonState.Pressed || newGame.Triggers.Right > 0) && checktime - shootTimer > .06)
+                {
+                    shootTimer = checktime;
+                    bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
+                    bulletsFired++;
+                }
+            }
+            else
+            {
+                firingMode = "Buzzsaw";
+                if (newMouseState.LeftButton == ButtonState.Pressed || newGame.Triggers.Right > 0)
+                {
+                    bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
+                    bulletsFired++;
+                }
             }
 
+
+            //temp create enemies
+            /*if ((newKeyboard.IsKeyDown(Keys.T) && !oldKeyboard.IsKeyDown(Keys.T)) || (GamePad.GetState(PlayerIndex.One).Triggers.Left > 0))
+            {
+                targets.Add(new Target(this, randomSpot()));
+            }*/
+
+            if (newKeyboard.IsKeyDown(Keys.Right) && !oldKeyboard.IsKeyDown(Keys.Right)) if (fireRate < 5) fireRate++;
+            if (newKeyboard.IsKeyDown(Keys.Left) && !oldKeyboard.IsKeyDown(Keys.Left)) if (fireRate > 0) fireRate--;
 
             fpsCamera.Update(gameTime);
             fps.Update(gameTime);
@@ -182,6 +256,7 @@ namespace Aim_Trainer
             
             oldKeyboard = newKeyboard;
             oldMouseState = newMouseState;
+            oldGame = newGame;
             base.Update(gameTime);
         }
 
@@ -202,17 +277,19 @@ namespace Aim_Trainer
             GraphicsDevice.Clear(Color.SkyBlue);
             
             spriteBatch.Begin();
-            terrain.Draw(fpsCamera);
 
-            //try something like iterating backwards to prevent weird wall visual glitches, or algo to determine which wall is closest to player and draw that last
+            floor.Draw(fpsCamera);
+            ceiling.Draw(fpsCamera);
+
             if (walls!= null) foreach (var wall in walls)
                 {
                     wall.Draw(fpsCamera);
                 }
 
-            fps.DrawFps(spriteBatch, font, new Vector2(10f, 10f), Color.MonoGameOrange);
-            spriteBatch.DrawString(font, fpsCamera.position.ToString(), new Vector2(1500, 980), Color.White);
-            //spriteBatch.DrawString(font, fx.ToString() + ", 75, " + fz.ToString() + " :  " + bullets.Count + " bullets", new Vector2(1500, 880), Color.White);
+            fps.DrawFps(spriteBatch, font, new Vector2(10f, 10f), Color.White);
+            spriteBatch.DrawString(font, "Fire Rate: " + firingMode, new Vector2(1500, 40), Color.White);
+            //spriteBatch.DrawString(font, fpsCamera.position.ToString(), new Vector2(1500, 980), Color.White);
+            spriteBatch.DrawString(font, "firing mode: "+fireRate + " \nShoot timer: "+shootTimer + "\ncheck timer: "+checktime, new Vector2(1500, 880), Color.White);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(935, 40), Color.White);
             //if (targets.Count > 1 && targets!= null) spriteBatch.DrawString(font, targets[targets.Count-1].position.ToString(), new Vector2(1500, 880), Color.White);
             

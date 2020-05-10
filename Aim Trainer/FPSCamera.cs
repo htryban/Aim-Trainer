@@ -89,10 +89,10 @@ namespace Aim_Trainer
             facing = Vector3.Transform(Vector3.Forward, Matrix.CreateRotationY(horizontalAngle));
 
             //movement
-            if (keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up)) position += facing * Speed;
-            if (keyboard.IsKeyDown(Keys.S) || keyboard.IsKeyDown(Keys.Down)) position -= facing * Speed;
-            if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.Left)) position += Vector3.Cross(Vector3.Up, facing) * Speed;
-            if (keyboard.IsKeyDown(Keys.D) || keyboard.IsKeyDown(Keys.Right)) position -= Vector3.Cross(Vector3.Up, facing) * Speed;
+            if (keyboard.IsKeyDown(Keys.W)) position += facing * Speed;
+            if (keyboard.IsKeyDown(Keys.S)) position -= facing * Speed;
+            if (keyboard.IsKeyDown(Keys.A)) position += Vector3.Cross(Vector3.Up, facing) * Speed;
+            if (keyboard.IsKeyDown(Keys.D)) position -= Vector3.Cross(Vector3.Up, facing) * Speed;
             position += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y * facing * Speed;
             position -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X * Vector3.Cross(Vector3.Up, facing) * Speed;
 
