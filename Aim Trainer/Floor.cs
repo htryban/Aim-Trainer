@@ -32,7 +32,7 @@ namespace Aim_Trainer
 
         public void Draw(ICamera camera)
         {
-            world = Matrix.CreateRotationY(facing) * Matrix.CreateTranslation(position);// * Matrix.CreateFromAxisAngle(new Vector3(0,0,0), .9f);
+            world = Matrix.CreateRotationY(facing) * Matrix.CreateTranslation(position);
 
             Matrix view = camera.View;
 

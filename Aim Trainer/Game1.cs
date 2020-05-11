@@ -43,6 +43,7 @@ namespace Aim_Trainer
         float shootTimer;
         string firingMode;
         double accuracy;
+        int gamemode;
 
         public Game1()
         {
@@ -73,11 +74,6 @@ namespace Aim_Trainer
             targets = new List<Target>();
             walls = new List<Wall>();
 
-            for(int i = 0; i < 4; i++)
-            {
-                targets.Add(new Target(this, randomSpot(), randomFruit()));
-            }
-
             base.Initialize();
         }
 
@@ -96,6 +92,7 @@ namespace Aim_Trainer
             bulletsFired = 0;
             shootTimer = 0;
             checktime = 0;
+            gamemode = 1;
 
             //walls referenced as if loading into the game without turning or moving
             walls.Add(new Wall(this, new Vector3(0, -30, -345), MathHelper.Pi)); //back left
@@ -200,7 +197,7 @@ namespace Aim_Trainer
             }
 
 
-            //temp create enemies
+            //manually create enemies
             /*if ((newKeyboard.IsKeyDown(Keys.T) && !oldKeyboard.IsKeyDown(Keys.T)) || (GamePad.GetState(PlayerIndex.One).Triggers.Left > 0))
             {
                 targets.Add(new Target(this, randomSpot()));
@@ -243,9 +240,15 @@ namespace Aim_Trainer
                 }
             }
 
-            if(targets.Count < 4)
+            //difficulties/gamemodes
+            if (newKeyboard.IsKeyDown(Keys.NumPad1)) gamemode = 6; // easy
+            if (newKeyboard.IsKeyDown(Keys.NumPad2)) gamemode = 5; // normal
+            if (newKeyboard.IsKeyDown(Keys.NumPad3)) gamemode = 3; // hard
+            if (newKeyboard.IsKeyDown(Keys.NumPad4)) gamemode = 1; // fruit sniper
+
+            if (targets.Count < 4)
             {
-                targets.Add(new Target(this, randomSpot(), randomFruit()));
+                targets.Add(new Target(this, randomSpot(), randomFruit(gamemode), gamemode));
             }
 
             if (targets != null) for (int i = 0; i < targets.Count; i++)
@@ -273,10 +276,19 @@ namespace Aim_Trainer
             return new Vector3(fx, fy, fz);
         }
 
-        public string randomFruit()
+        public string randomFruit(int i)
         {
-            int x = rand.Next(1, 3);
+            int y = 1;
+            if (i == 6)
+            {
+                y = 3;
+                i = 5;
+            }
+            else if (i == 1) i = 5;
+            int x = rand.Next(y, i);
             if (x == 1) return "apple";
+            else if (x == 2) return "Orange";
+            else if (x == 3) return "pumpkin";
             else return "melon";
         }
 

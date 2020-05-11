@@ -29,18 +29,20 @@ namespace Aim_Trainer
 
         public Matrix world;
 
-        public Target(Game game, Vector3 pos, string fruit)
+        bool falling;
+
+        public Target(Game game, Vector3 pos, string fruit, int gamemode)
         {
             this.game = game;
             model = game.Content.Load<Model>(fruit);
             position = pos;
             transforms = new Matrix[model.Bones.Count];
-            //facing = MathHelper.Pi;
+            if (gamemode == 1) falling = true;
         }
 
         public void Update(GameTime gameTime)
         {
-            //position.Y -= .1f;
+            if(falling) position.Y -= .4f;
             if (position.Y <= -5)
             {
                 isRemoved = true;
@@ -51,7 +53,7 @@ namespace Aim_Trainer
 
         public void Draw(ICamera camera)
         {
-            world = Matrix.CreateRotationY(facing) * Matrix.CreateTranslation(position);// * Matrix.CreateFromAxisAngle(new Vector3(0,0,0), .9f);
+            world = Matrix.CreateRotationY(facing) * Matrix.CreateTranslation(position);
 
             Matrix view = camera.View;
 
