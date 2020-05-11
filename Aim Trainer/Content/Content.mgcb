@@ -44,6 +44,12 @@
 /processorParam:TextureFormat=Color
 /build:apple_texture_by_agf81_d2u9mzx-pre.jpg
 
+#begin AR15single.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:AR15single.wav
+
 #begin ceiling.fbx
 /importer:FbxImporter
 /processor:ModelProcessor
@@ -98,6 +104,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:crosshair.png
+
+#begin deagle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:deagle.wav
 
 #begin font.spritefont
 /importer:FontDescriptionImporter
@@ -163,6 +175,12 @@
 /processorParam:TextureFormat=Compressed
 /build:melon.fbx
 
+#begin pistol.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pistol.wav
+
 #begin pomegranate.fbx
 /importer:FbxImporter
 /processor:ModelProcessor
@@ -215,7 +233,7 @@
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
-/processorParam:Scale=0.2
+/processorParam:Scale=0.3
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:pumpkin.fbx
@@ -231,6 +249,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:pumpkin_texture.jpg
+
+#begin singleshot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:singleshot.wav
+
+#begin supressed.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:supressed.wav
 
 #begin tiledfloor.fbx
 /importer:FbxImporter

@@ -30,6 +30,10 @@ namespace Aim_Trainer
 
         Matrix world;
 
+        public float Speed { get; set; } = 5f;
+
+        public Vector3 direction { get; set; }
+
         public Bullet(Game game, Vector3 dir, float horizonalAngle, Vector3 pos)
         {
             this.game = game;
@@ -52,10 +56,6 @@ namespace Aim_Trainer
             }
             return false;
         }
-
-        public float Speed { get; set; } = 5f;
-
-        public Vector3 direction { get; set; }
 
         public void Update(GameTime gameTime)
         {

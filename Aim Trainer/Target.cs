@@ -42,7 +42,7 @@ namespace Aim_Trainer
 
         public void Update(GameTime gameTime)
         {
-            if(falling) position.Y -= .4f;
+            if(falling) position.Y -= .3f;
             if (position.Y <= -5)
             {
                 isRemoved = true;

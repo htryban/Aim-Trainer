@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
@@ -23,6 +25,7 @@ namespace Aim_Trainer
         List<Wall> walls;
         Floor floor;
         Floor ceiling;
+        List<SoundEffect> sounds;
 
         KeyboardState newKeyboard;
         MouseState newMouseState;
@@ -74,6 +77,8 @@ namespace Aim_Trainer
             targets = new List<Target>();
             walls = new List<Wall>();
 
+            sounds = new List<SoundEffect>();
+
             base.Initialize();
         }
 
@@ -92,7 +97,7 @@ namespace Aim_Trainer
             bulletsFired = 0;
             shootTimer = 0;
             checktime = 0;
-            gamemode = 1;
+            gamemode = 5;
 
             //walls referenced as if loading into the game without turning or moving
             walls.Add(new Wall(this, new Vector3(0, -30, -345), MathHelper.Pi)); //back left
@@ -110,6 +115,12 @@ namespace Aim_Trainer
 
             floor = new Floor(this, new Vector3(58,1,-84), 0, false); 
             ceiling = new Floor(this, new Vector3(58, 80, -84), 0, true);
+
+            sounds.Add(Content.Load<SoundEffect>("singleshot"));
+            sounds.Add(Content.Load<SoundEffect>("AR15single"));
+            sounds.Add(Content.Load<SoundEffect>("pistol"));
+            sounds.Add(Content.Load<SoundEffect>("supressed"));
+            sounds.Add(Content.Load<SoundEffect>("deagle"));
         }
 
         /// <summary>
@@ -144,6 +155,8 @@ namespace Aim_Trainer
                 {
                     bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
                     bulletsFired++;
+                    var instance = sounds[2].CreateInstance();
+                    instance.Play();
                 }
             }
             else if (fireRate == 1)
@@ -154,6 +167,8 @@ namespace Aim_Trainer
                     shootTimer = checktime;
                     bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
                     bulletsFired++;
+                    var instance = sounds[1].CreateInstance();
+                    instance.Play();
                 }
             }
             else if (fireRate == 2)
@@ -164,6 +179,8 @@ namespace Aim_Trainer
                     shootTimer = checktime;
                     bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
                     bulletsFired++;
+                    var instance = sounds[0].CreateInstance();
+                    instance.Play();
                 }
             }
             else if (fireRate == 3)
@@ -174,6 +191,8 @@ namespace Aim_Trainer
                     shootTimer = checktime;
                     bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
                     bulletsFired++;
+                    var instance = sounds[4].CreateInstance();
+                    instance.Play();
                 }
             }
             else if (fireRate == 4)
@@ -184,6 +203,8 @@ namespace Aim_Trainer
                     shootTimer = checktime;
                     bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
                     bulletsFired++;
+                    var instance = sounds[3].CreateInstance();
+                    instance.Play();
                 }
             }
             else
@@ -193,6 +214,8 @@ namespace Aim_Trainer
                 {
                     bullets.Add(new Bullet(this, fpsCamera.firingAngle, fpsCamera.horizontalAngle, fpsCamera.position));
                     bulletsFired++;
+                    var instance = sounds[1].CreateInstance();
+                    instance.Play();
                 }
             }
 
@@ -241,11 +264,12 @@ namespace Aim_Trainer
             }
 
             //difficulties/gamemodes
-            if (newKeyboard.IsKeyDown(Keys.NumPad1)) gamemode = 6; // easy
-            if (newKeyboard.IsKeyDown(Keys.NumPad2)) gamemode = 5; // normal
-            if (newKeyboard.IsKeyDown(Keys.NumPad3)) gamemode = 3; // hard
-            if (newKeyboard.IsKeyDown(Keys.NumPad4)) gamemode = 1; // fruit sniper
+            if (newKeyboard.IsKeyDown(Keys.NumPad1) || newKeyboard.IsKeyDown(Keys.D1)) gamemode = 6; // easy
+            if (newKeyboard.IsKeyDown(Keys.NumPad2) || newKeyboard.IsKeyDown(Keys.D2)) gamemode = 5; // normal
+            if (newKeyboard.IsKeyDown(Keys.NumPad3) || newKeyboard.IsKeyDown(Keys.D3)) gamemode = 3; // hard
+            if (newKeyboard.IsKeyDown(Keys.NumPad4) || newKeyboard.IsKeyDown(Keys.D4)) gamemode = 1; // fruit sniper
 
+            //replacing targets that are shot or expire
             if (targets.Count < 4)
             {
                 targets.Add(new Target(this, randomSpot(), randomFruit(gamemode), gamemode));
@@ -270,8 +294,14 @@ namespace Aim_Trainer
 
         public Vector3 randomSpot()
         {
+            
+            
             fx = (float)rand.Next(0, 100);
-            fy = (float)rand.Next(6, 40);
+            if (gamemode == 1)
+            {
+                fy = 60;
+            }
+            else fy = (float)rand.Next(6, 40);
             fz = (float)rand.Next(-250, -200);
             return new Vector3(fx, fy, fz);
         }
