@@ -1,2 +1,3 @@
 # Aim-Trainer
-aim trainer for CIS 580 Final project
+Aim Trainer for CIS 580 Final project, KSU
+Using Monogame and Microsoft XNA
