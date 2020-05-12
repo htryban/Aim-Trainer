@@ -447,6 +447,11 @@ namespace Aim_Trainer
                 if ((newKeyboard.IsKeyDown(Keys.Left) && !oldKeyboard.IsKeyDown(Keys.Left)) || (newGame.DPad.Left == ButtonState.Pressed && oldGame.DPad.Left == ButtonState.Released)
                     || newMouseState.ScrollWheelValue < oldScroll)
                     if (fireRate > 0) fireRate--;
+
+                if ((newKeyboard.IsKeyDown(Keys.Up) && !oldKeyboard.IsKeyDown(Keys.Up)) || (newGame.DPad.Up == ButtonState.Pressed && oldGame.DPad.Up == ButtonState.Released))
+                    fpsCamera.Sensitivity += .01f;
+                if ((newKeyboard.IsKeyDown(Keys.Down) && !oldKeyboard.IsKeyDown(Keys.Down)) || (newGame.DPad.Down == ButtonState.Pressed && oldGame.DPad.Down == ButtonState.Released))
+                    fpsCamera.Sensitivity -= .01f;
             }
 
             //manually quitting a game before time is up
@@ -640,8 +645,9 @@ namespace Aim_Trainer
                 else if (checktime - startTime < 2) spriteBatch.DrawString(menufont, "2", new Vector2(countdownLocation2D.X, countdownLocation2D.Y), Color.White, 0, default, 3, SpriteEffects.None, default);
                 else if (checktime - startTime < 3) spriteBatch.DrawString(menufont, "1", new Vector2(countdownLocation2D.X, countdownLocation2D.Y), Color.White, 0, default, 3, SpriteEffects.None, default);
                 else { countdown = false; bulletsFired = 0; }
-                spriteBatch.DrawString(font, "   Use the Scroll wheel or D-Pad to change Weapons\n\n" +
-                                             "Press Q or the Start button to return to the Main Menu", new Vector2(countdownLocation2D.X - 240, countdownLocation2D.Y + 200), Color.White);
+                spriteBatch.DrawString(font, "Use the Scroll wheel or L/R on the D-Pad to change Weapons\n\n" +
+                                             "   Press Q or the Start button to return to the Main Menu,\n\n" +
+                                             "  Up/Down arrow keys or on the D-Pad to adjust sensitivity", new Vector2(countdownLocation2D.X - 240, countdownLocation2D.Y + 200), Color.White);
             }
 
             //main menu screen

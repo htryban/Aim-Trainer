@@ -43,7 +43,7 @@ namespace Aim_Trainer
         /// <summary>
         /// The sensitivity of the mouse when aiming
         /// </summary>
-        public float Sensitivity { get; set; } = 0.1f;
+        public float Sensitivity { get; set; } = 0.08f;
 
         /// <summary>
         /// The speed of the player while moving 
@@ -86,6 +86,7 @@ namespace Aim_Trainer
             var keyboard = Keyboard.GetState();
             var newMouseState = Mouse.GetState();
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (Sensitivity < .01) Sensitivity = .01f;
 
             //get dir player is facing
             facing = Vector3.Transform(Vector3.Forward, Matrix.CreateRotationY(horizontalAngle));
