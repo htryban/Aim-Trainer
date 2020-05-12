@@ -57,6 +57,8 @@ namespace Aim_Trainer
 
         public Vector3 firingAngle { get; set; }
 
+        public Matrix world;
+
 
         /// <summary>
         /// Constructs a new FPS Camera
@@ -109,6 +111,7 @@ namespace Aim_Trainer
             //reset mouse state
             Mouse.SetPosition(game.Window.ClientBounds.Width / 2, game.Window.ClientBounds.Height / 2);
             oldMouseState = Mouse.GetState();
+            world = Matrix.CreateRotationY(0) * Matrix.CreateTranslation(position);
         }
 
     }

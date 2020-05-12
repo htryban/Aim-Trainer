@@ -25,11 +25,13 @@ namespace Aim_Trainer
 
         public float lifespan = 5f;
 
-        private float _timer;
+        public float _timer;
 
         public Matrix world;
 
         bool falling;
+
+        int gm;
 
         public Target(Game game, Vector3 pos, string fruit, int gamemode)
         {
@@ -37,7 +39,8 @@ namespace Aim_Trainer
             model = game.Content.Load<Model>(fruit);
             position = pos;
             transforms = new Matrix[model.Bones.Count];
-            if (gamemode == 1) falling = true;
+            gm = gamemode;
+            if (gm == 1) falling = true;
         }
 
         public void Update(GameTime gameTime)
@@ -48,7 +51,7 @@ namespace Aim_Trainer
                 isRemoved = true;
             }
             _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (_timer > lifespan) isRemoved = true;
+            if ((_timer > lifespan) && (gm != 0)) isRemoved = true;
         }
 
         public void Draw(ICamera camera)
